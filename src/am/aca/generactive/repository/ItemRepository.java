@@ -53,4 +53,11 @@ public class ItemRepository {
                 filter(item -> item.getBasePrice() == max).
                 collect(Collectors.toList());
     }
+    public ArrayList<Item> getItems(){
+
+        return (ArrayList<Item>) items;
+    }
+    public int size(){
+        return items.size();
+    }
 }

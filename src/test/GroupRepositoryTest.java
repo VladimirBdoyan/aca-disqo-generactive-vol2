@@ -4,10 +4,10 @@ import am.aca.generactive.model.Group;
 import am.aca.generactive.repository.GroupRepository;
 import am.aca.generactive.util.idgenerator.GroupIdGenerator;
 import am.aca.generactive.util.idgenerator.IdGenerator;
-import org.junit.Assert;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GroupRepositoryTest {
     GroupRepository groupRepository = GroupRepository.getInstance();

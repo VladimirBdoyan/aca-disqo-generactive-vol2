@@ -2,19 +2,20 @@ package am.aca.generactive.util.filereader;
 
 import am.aca.generactive.model.StockItem;
 import am.aca.generactive.repository.GroupRepository;
+import am.aca.generactive.repository.ItemRepository;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ItemFileReader {
-    public void readScv(String url) {
+    public static void readScv(String url) {
         File file = new File(url);
         Scanner sc = null;
         try {
             sc = new Scanner(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Wrong File directory");
         }
         while (sc.hasNext()) {
             String[] itemData = sc.nextLine().split(",");
@@ -26,6 +27,7 @@ public class ItemFileReader {
             StockItem item = new StockItem(id, basePrice, name);
             item.setImageUrl(imageUrl);
             GroupRepository.getInstance().findGroupById(groupId).addItem(item);
+            ItemRepository.getInstance().addItem(item);
         }
     }
 }

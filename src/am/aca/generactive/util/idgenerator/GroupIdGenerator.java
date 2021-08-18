@@ -15,4 +15,7 @@ public final class GroupIdGenerator {
     public static int getCURRENT() {
         return CURRENT;
     }
+    public static void setCURRENT(int CURR) {
+         CURRENT = CURR;
+    }
 }
