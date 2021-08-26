@@ -2,23 +2,23 @@ package test;
 
 import am.aca.generactive.model.Group;
 import am.aca.generactive.model.Item;
-import am.aca.generactive.model.StockItem;
 import am.aca.generactive.repository.GroupRepository;
 import am.aca.generactive.repository.ItemRepository;
 import am.aca.generactive.util.filereader.ItemFileReader;
 import am.aca.generactive.util.idgenerator.GroupIdGenerator;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
+
+
+import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCRUD {
+    static int GROUPING = 3;
+    static String DIRECORY = "src/resources/Item.csv";
 
     GroupRepository groupRepository = GroupRepository.getInstance();
-    Item item ;
 
     @Test
     public void testIdGeneration() {
@@ -28,7 +28,6 @@ public class TestCRUD {
         assertEquals(currentIdBefore + 1, currentIdAfter);
     }
 
-
     @Test
     public void testReadCsvFileDirectory() {
         assertThrows(RuntimeException.class, () -> ItemFileReader.readScv("wrong Directory"));
@@ -37,19 +36,21 @@ public class TestCRUD {
     @Test
     void testReadCsvAndCreateItem() {
         GroupIdGenerator.setCURRENT(0);
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= GROUPING; i++) {
             groupRepository.addGroup(new Group(GroupIdGenerator.getNextId(), "Group " + i));
         }
-        ItemFileReader.readScv("src/resources/Item.csv");
+        ItemFileReader.readScv(DIRECORY);
 
-        assertEquals(3, groupRepository.size());
+        assertEquals(GROUPING, groupRepository.size());
 
         // Test the show if Items add in Repository by their constructor
 
-        for (int i = 1; i <= 9; i++) {
-            assertEquals(i, ItemRepository.getInstance().getItems().get(i - 1).getId());
-            assertEquals(i*100, ItemRepository.getInstance().getItems().get(i - 1).getBasePrice());
-            assertEquals("Test" + i, ItemRepository.getInstance().getItems().get(i - 1).getName());
+        Optional<Item> o = ItemRepository.getInstance().getItems().stream().findFirst();
+        if (o.isPresent()) {
+            Item item = o.get();
+            assertEquals(1, item.getId());
+            assertEquals(100, item.getBasePrice());
+            assertEquals("Test1", item.getName());
         }
     }
 }
